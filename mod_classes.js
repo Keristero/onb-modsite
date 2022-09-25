@@ -304,7 +304,7 @@ class SkinNode extends ModNode{
         }
         let screenshots = this?.data?.data?.screenshots
         if(screenshots){
-            this.skin_preview.src = screenshots[0]
+            this.skin_preview.src = `${config.api_url}/${screenshots[0]}`
         }
         this.element.classList.add('skin_node')
     }

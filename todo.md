@@ -1,0 +1,1 @@
+1. add query params and page history, allows you to share a link with a filter+sort option prefilled.

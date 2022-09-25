@@ -1,0 +1,234 @@
+/* fonts */
+@font-face { font-family: BN6; src: url('/fonts/BN6FontThin.ttf'); }
+@font-face { font-family: BN6;font-weight: bold; src: url('/fonts/BN6FontBold.ttf'); }  
+
+/* main styles */
+
+body{
+    background-color: lightblue;
+    image-rendering: pixelated;
+    font-family: BN6;
+}
+
+div {
+    padding:0;
+    margin:0;
+}
+p{
+    padding:0;
+    margin:0;
+}
+input{
+    margin:10px;
+    padding:2px;
+    font-family: BN6;
+    font-size:medium;
+}
+select{
+    margin:10px;
+    padding:2px;
+    font-family: BN6;
+    font-size:medium;
+}
+
+#filters {
+    width: 100%;
+    display: flex;
+    gap: 0px 10px;
+    padding-bottom: 20px;
+    width:fit-content;
+}
+
+#mods {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 10px;
+}
+
+button{
+    text-align: center;
+    background-color:rgba(255, 255, 255, 0.329);
+    overflow:hidden;
+    box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.287);
+    height:fit-content;
+    width:fit-content;
+    padding:10px;
+}
+
+.filter{
+    text-align: left;
+    background-color:rgba(255, 255, 255, 0.329);
+    overflow:hidden;
+    box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.287);
+}
+
+.mod{
+    position:relative;
+    width: 200px;
+    height: 200px;
+    text-align: left;
+    background-color:rgba(255, 255, 255, 0.329);
+    box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.287);
+}
+
+.selected{
+    color:blue;
+    box-shadow: 0px 0px 20px rgba(6, 2, 255, 0.863);
+}
+
+.mod:hover{
+    box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.562);
+}
+
+.selected:hover{
+    box-shadow: 0px 0px 20px rgba(6, 2, 255, 0.863);
+}
+
+.disable_selection {
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+.detail_view{
+    display:inline-flex;
+    position:absolute;
+    margin: 0;
+    padding:6px;
+    background-color:rgba(22, 22, 22, 0.842);
+    color:rgb(255, 255, 255);
+    box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.287);
+    z-index: 2;
+    transition: width 1s, height 1s;
+}
+.detail_view p{
+    margin:4px;
+    width:max-content;
+}
+.detail_view a{
+    color:rgb(251, 255, 0);
+}
+
+
+/* styles for properties of the mod nodes */
+.name{
+    display:block;
+    overflow:hidden;
+    font-weight: bold;
+    top: 0px;
+    left: 0px;
+    height:15px;
+    background-color: white;
+}
+.preview_window{
+    overflow: hidden;
+    display:block;
+    position: absolute;
+    text-align: center;
+    background-color: rgba(0,0,0,0.5);
+    top:15px;
+    width:100%;
+}
+.enemy_preview{
+    height:96px;
+}
+.chip_preview{
+    height:96px;
+}
+.chip_icon{
+    position: absolute;
+    top:111px;
+    left:0px;
+    width:14;
+    height:14;
+}
+.chip_codes{
+    position: absolute;
+    top:111px;
+    left:14;
+    padding-left: 4px;
+    height:14;
+    width:172px;
+    background-color: rgba(0, 0, 0, 0.753);
+    color:rgba(255, 255, 255, 0.705);
+    text-shadow: 1px 1px rgba(0, 0, 0, 0.705);
+}
+.element{
+    position: absolute;
+    top:111px;
+    right:0px;
+    width:14;
+    height:14;
+    z-index: 1;
+}
+.damage{
+    text-align: center;
+    color:rgb(0, 0, 0);
+    position: absolute;
+    font-weight: bold;
+    font-size: 21;
+    right:0;
+    width:44;
+    top:91;
+    z-index:1;
+    text-shadow: 2px 2px 0px rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0);
+}
+.skin_preview{
+    height:128px;
+}
+.player_preview{
+    height:128px;
+    filter: drop-shadow(0px 0px 25px rgb(255, 255, 255));
+}
+.download{
+    display:inline-block;
+    position: absolute;
+    bottom:0px;
+    right: 0px;
+}
+.nft{
+    display:inline-block;
+    position: absolute;
+    bottom:0px;
+    left: 0px;
+}
+.description{
+    display:inline;
+    position: absolute;
+    bottom:20px;
+    left: 0px;
+    padding-left:2px;
+    padding-right:2px;
+}
+
+/* navicust node */
+.ncp_block{
+    background-color:rgba(0, 0, 0, 0.198);
+}
+
+/* na */
+.enemy_node{
+    background-color:rgba(255, 0, 0, 0.26);
+}
+.skin_node{
+    background-color:rgba(17, 255, 0, 0.299);
+}
+
+/* card class backgrounds */
+.Standard{
+    background-color:rgba(251, 255, 129, 0.5);
+}
+.Mega{
+    background-color:rgba(126, 240, 255, 0.5);
+}
+.Giga{
+    background-color:rgba(255, 126, 249, 0.5);
+}
+.Dark{
+    background-color:rgba(105, 0, 146, 0.5);
+}

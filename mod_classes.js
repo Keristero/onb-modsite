@@ -223,7 +223,7 @@ class CardNode extends ModNode{
             this.element_icon.classList.add("element")
             this.element.appendChild(this.element_icon)
         }
-        this.element_icon.src = `/images/${this.chip_element}.png`
+        this.element_icon.src = `assets/images/${this.chip_element}.png`
 
         if(!this.codes_p){
             this.codes_p = document.createElement('p')

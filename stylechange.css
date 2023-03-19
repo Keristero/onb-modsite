@@ -1,6 +1,6 @@
 /* fonts */
-@font-face { font-family: BN6; src: url('/fonts/BN6FontThin.ttf'); }
-@font-face { font-family: BN6;font-weight: bold; src: url('/fonts/BN6FontBold.ttf'); }  
+@font-face { font-family: BN6; src: url('assets/fonts/BN6FontThin.ttf'); }
+@font-face { font-family: BN6;font-weight: bold; src: url('assets/fonts/BN6FontBold.ttf'); }  
 
 /* main styles */
 

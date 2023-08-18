@@ -1,8 +1,8 @@
 import {create_mod_node} from './mod_classes.js'
 import {ModsFilter,ModsSorter,detail_filters,sort_options,search_aliases} from './filter.js'
-import {downloadZip} from './libs/client-zip.js'
+import {downloadZip} from '../libs/client-zip.js'
 import {hide_detail_view} from './detail_view.js'
-import {config} from './config.js'
+import {config} from '../config.js'
 
 const div_mods = document.getElementById('mods')
 const div_filters = document.getElementById('filters')

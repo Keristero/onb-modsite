@@ -145,7 +145,7 @@ button{
 .online_status.online{
     color:rgb(0, 255, 34);
 }
-.players_online{
+.online_players{
     font-size: 18;
 }
 

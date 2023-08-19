@@ -53,7 +53,7 @@ class ServerNode{
         this.data = latest_mod_data
         if(!this.element){
             this.element = document.createElement('div')
-            this.element.style.backgroundColor = this.data.details.color
+            this.element.style.backgroundColor = this.data.color
         }
         //clear class list
         this.element.classList.remove(...this.element.classList);
@@ -83,17 +83,17 @@ class ServerNode{
         if(!this.p_name){
             this.p_name = create_append_add_classes("p",this.description_window,["name"])
         }
-        this.p_name.textContent = this.data.details.name
+        this.p_name.textContent = this.data.name
 
         if(!this.p_description){
             this.p_description = create_append_add_classes("p",this.description_window,["description"])
         }
-        this.p_description.textContent = this.data.details.description
+        this.p_description.textContent = this.data.description
 
         if(!this.pre_address){
             this.pre_address = create_append_add_classes("pre",this.description_window,["address"])
         }
-        this.pre_address.textContent = this.data.details.address
+        this.pre_address.textContent = this.data.address
         //-->In description window--> in address bar
         if(!this.btn_copy_address){
             this.btn_copy_address = create_append_add_classes("button",this.pre_address,[])
@@ -125,14 +125,14 @@ class ServerNode{
             this.p_online_status.textContent = "OFFLINE"
         }
 
-        if(!this.p_players_online){
-            this.p_players_online = create_append_add_classes("p",this.div_status_box,["players_online"])
+        if(!this.p_online_players){
+            this.p_online_players = create_append_add_classes("p",this.div_status_box,["online_players"])
         }
-        this.p_players_online.textContent = `players: ${this.data.online_players}`
+        this.p_online_players.textContent = `players: ${this.data.online_players}`
         if(this.is_online){
-            this.p_players_online.hidden = false
+            this.p_online_players.hidden = false
         }else{
-            this.p_players_online.hidden = true
+            this.p_online_players.hidden = true
         }
 
    

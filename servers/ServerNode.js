@@ -128,11 +128,11 @@ class ServerNode{
         if(!this.p_players_online){
             this.p_players_online = create_append_add_classes("p",this.div_status_box,["players_online"])
         }
-        this.p_players_online.textContent = `players: ${this.data.players_online}`
+        this.p_players_online.textContent = `players: ${this.data.online_players}`
         if(this.is_online){
             this.p_players_online.hidden = false
         }else{
-            this.p_players_online.hidden = false
+            this.p_players_online.hidden = true
         }
 
    

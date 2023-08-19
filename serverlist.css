@@ -1,0 +1,177 @@
+/* fonts */
+@font-face { font-family: BN6; src: url('assets/fonts/BN6FontThin.ttf'); }
+@font-face { font-family: BN6;font-weight: bold; src: url('assets/fonts/BN6FontBold.ttf'); }  
+
+/* main styles */
+
+body{
+    background-color: lightblue;
+    image-rendering: pixelated;
+    font-family: BN6;
+}
+
+div {
+    padding:0;
+    margin:0;
+}
+p{
+    padding:0;
+    margin:0;
+}
+input{
+    margin:10px;
+    padding:2px;
+    font-family: BN6;
+    font-size:medium;
+}
+select{
+    margin:10px;
+    padding:2px;
+    font-family: BN6;
+    font-size:medium;
+}
+
+.disable_selection {
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+button{
+    text-align: center;
+    background-color:rgba(255, 255, 255, 0.329);
+    overflow:hidden;
+    box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.287);
+    height:fit-content;
+    width:fit-content;
+    padding:10px;
+}
+
+#servers {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 10px;
+}
+
+.server{
+    position:relative;
+    width: 800px;
+    height: 150px;
+    display: block;
+    text-align: left;
+    box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.287);
+}
+.dark_overlay{
+    position:absolute;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: stretch;
+    align-content: stretch;
+    width: 800px;
+    height: 150px;
+    background-color: rgba(0,0,0,0.2);
+}
+
+.preview_window{
+    width:150px;
+    height:150px;
+}
+/* in preview window */
+.chip_preview{
+    width:150px;
+    height:150px;
+}
+.description_window{
+    flex-grow: 1;
+    padding:10px;
+    text-align: left;
+    font-size: 18px;
+}
+/* in description window */
+
+.address{
+    background-color: rgba(0, 0, 0, 0.287);
+    color: white
+}
+
+.name{
+    color: rgb(255, 255, 255);
+    font-size: 30px;
+    font-family: BN6;
+    font-weight: bold;
+    text-shadow: 2px 2px 1px rgb(0, 0, 0);
+}
+
+.description{
+    padding-top:5px;
+    color: rgb(255, 255, 255)
+}
+
+.tag{
+    padding:5px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.645);
+    color: rgb(0, 0, 0)
+}
+
+/* status window */
+.status{
+    width:125px;
+    height:125px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: left;
+}
+.status > p{
+    background-color: rgba(255, 255, 255, 0.503);
+    padding:4px;
+    border-radius: 8px;
+    margin:3px;
+}
+.online_status{
+    font-size: 20px;
+    font-weight: bold;
+}
+.online_status.offline{
+    color:red;
+}
+.online_status.online{
+    color:rgb(0, 255, 34);
+}
+.players_online{
+    font-size: 18;
+}
+
+/* in address window */
+.address{
+    height: 25px;
+    position: absolute;
+    overflow:hidden;
+    bottom: 0;
+    margin:0;
+    text-align: left;
+    width:650px;
+    left: 150;
+}
+.address > button{
+    padding:0px;
+    margin-right: 10px;
+    float: left;
+    height: 25px;
+    width: 128px;
+    box-shadow: none;
+    color:white;
+    font-size: 15px;
+    background-color: rgba(0, 0, 0, 0.265);
+    font-family: BN6;
+}
+.address > button:hover{
+    background-color: rgba(156, 156, 156, 0.265);
+}

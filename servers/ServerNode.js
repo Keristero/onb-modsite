@@ -99,7 +99,7 @@ class ServerNode{
             this.btn_copy_address = create_append_add_classes("button",this.pre_address,[])
             this.btn_copy_address.textContent = "copy address"
             this.btn_copy_address.onclick = ()=>{
-                setClipboard("memes")
+                setClipboard(this.data.address)
                 this.btn_copy_address.textContent = "copied!"
                 setTimeout(()=>{
                     this.btn_copy_address.textContent = "copy address"

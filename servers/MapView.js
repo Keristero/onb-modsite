@@ -119,11 +119,11 @@ class MapView{
                 }
             }
             //add attract force to vel
-            for(let node_b_id of node.connections){
-                if(node_b_id){
-                    let node_b = this.nodes[node_b_id]
-                    vel_x -= (node.x - node_b.x)*0.001
-                    vel_y -= (node.y - node_b.y)*0.001
+            for(let other_node_id in this.nodes){
+                if(other_node_id != node_id){
+                    let other_node = this.nodes[other_node_id]
+                    vel_x -= (node.x - other_node.x)*0.001
+                    vel_y -= (node.y - other_node.y)*0.001
                 }
             }
             vel_x = Math.max(Math.min(vel_x,this.max_repulsion),-this.max_repulsion)

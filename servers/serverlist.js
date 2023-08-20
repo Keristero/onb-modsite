@@ -1,4 +1,5 @@
 import ServerNode from './ServerNode.js'
+import MapView from './MapView.js'
 import {config} from '../config.js'
 
 const div_mods = document.getElementById('servers')
@@ -7,6 +8,8 @@ const server_nodes = {}
 
 //we will request the server list here in future
 import sample_servers from "./samplejson.js" 
+
+let map_view
 
 async function main(){
     let server_list
@@ -18,6 +21,14 @@ async function main(){
     console.log(server_list)
     update_server_nodes(server_list, server_nodes)
     render_server_nodes(server_nodes)
+    map_view = new MapView(server_list)
+    div_mods.appendChild(map_view.get_html_element())
+    window.requestAnimationFrame(render_loop);
+}
+
+function render_loop(){
+    map_view.draw()
+    window.requestAnimationFrame(render_loop);
 }
 
 function get_server_list(get_test_list_instead) {

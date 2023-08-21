@@ -1,5 +1,6 @@
 import {create_mod_node} from './mod_classes.js'
 import {ModsFilter,ModsSorter,detail_filters,sort_options,search_aliases} from './filter.js'
+import {create_append_add_classes} from '../helpers.js'
 import {downloadZip} from '../libs/client-zip.js'
 import {hide_detail_view} from './detail_view.js'
 import {config} from '../config.js'
@@ -27,12 +28,6 @@ hide_detail_view()
 document.body.addEventListener('click',(e)=>{
     hide_detail_view()
 })
-
-let mod_list = await get_mod_list()
-update_mod_nodes(mod_list, mod_nodes)
-render_mod_nodes(mod_nodes)
-filter_mod_list('any',"")
-sort_mod_list("timestamp")
 
 //create select all button
 let btn_select_all = document.createElement('button')
@@ -75,6 +70,23 @@ btn_download_selected.onclick = async()=>{
 }
 btn_download_selected.style.display = "none"
 div_filters.appendChild(btn_download_selected)
+
+let btn_servers = create_append_add_classes("button",div_filters,[])
+btn_servers.textContent = "View Servers"
+btn_servers.onclick = ()=>{
+    location.href = "servers.html"
+}
+let btn_map = create_append_add_classes("button",div_filters,[])
+btn_map.textContent = "Open Map"
+btn_map.onclick = ()=>{
+    window.open("map.html");
+}
+
+let mod_list = await get_mod_list()
+update_mod_nodes(mod_list, mod_nodes)
+render_mod_nodes(mod_nodes)
+filter_mod_list('any',"")
+sort_mod_list("timestamp")
 
 function list_selected_mods() {
     let selected_mod_nodes = []

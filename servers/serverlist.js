@@ -1,6 +1,6 @@
 import ServerNode from './ServerNode.js'
-import MapView from './MapView.js'
 import {config} from '../config.js'
+import {create_append_add_classes} from '../helpers.js'
 
 const div_mods = document.getElementById('servers')
 const div_filters = document.getElementById('filters')
@@ -9,7 +9,16 @@ const server_nodes = {}
 //we will request the server list here in future
 import sample_servers from "./samplejson.js" 
 
-let map_view
+let btn_mods = create_append_add_classes("button",div_filters,[])
+btn_mods.textContent = "View Mods"
+btn_mods.onclick = ()=>{
+    location.href = "index.html"
+}
+let btn_map = create_append_add_classes("button",div_filters,[])
+btn_map.textContent = "Open Map"
+btn_map.onclick = ()=>{
+    window.open("map.html");
+}
 
 async function main(){
     let server_list
@@ -18,17 +27,8 @@ async function main(){
     }else{
         server_list = await get_server_list(false)
     }
-    console.log(server_list)
     update_server_nodes(server_list, server_nodes)
     render_server_nodes(server_nodes)
-    map_view = new MapView(server_list)
-    div_mods.appendChild(map_view.get_html_element())
-    window.requestAnimationFrame(render_loop);
-}
-
-function render_loop(){
-    map_view.draw()
-    window.requestAnimationFrame(render_loop);
 }
 
 function get_server_list(get_test_list_instead) {

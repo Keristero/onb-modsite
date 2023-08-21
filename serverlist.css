@@ -49,6 +49,10 @@ button{
     padding:10px;
 }
 
+#filters > button{
+    margin: 10px;
+}
+
 #servers {
     width: 100%;
     display: flex;

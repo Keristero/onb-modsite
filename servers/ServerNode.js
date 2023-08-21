@@ -1,13 +1,5 @@
 import {config} from '../config.js'
-
-function create_append_add_classes(tag,parent,classes){
-    let element = document.createElement(tag)
-    for(let class_name of classes){
-        element.classList.add(class_name)
-    }
-    parent.appendChild(element)
-    return element
-}
+import {create_append_add_classes} from '../helpers.js'
 
 function setClipboard(text) {
     const type = "text/plain";

@@ -3,6 +3,27 @@ import {config} from '../config.js'
 //we will request the server list here in future
 import sample_servers from "./samplejson.js" 
 
+const exampleSocket = new WebSocket(config.websocet_api_url, 'version1');
+let server_list
+let onb_map_graph = ForceGraph3D()
+    (document.getElementById('3d-graph'))
+    .linkWidth(0.5)
+    .nodeThreeObject(node => {
+        const sprite = new SpriteText(node.label);
+        sprite.material.depthWrite = false; // make sprite background transparent
+        sprite.color = node.color;
+        sprite.textHeight = 10;
+        sprite.fontFace = "courier new"
+        sprite.fontWeight = "bold"
+        return sprite;})
+    .onNodeHover(node => {
+        console.log(node)
+    })
+    .linkDirectionalParticles(2)
+    .linkDirectionalParticleSpeed(0.001)
+    .linkDirectionalParticleColor((link)=>link.particle_color)
+    .linkDirectionalParticleWidth(2)
+
 
 function get_server_id_from_address(server_list,address){
     for(let server_id in server_list){
@@ -47,19 +68,25 @@ function server_list_to_nodes_and_links(server_list){
             if(!label || label == ""){
                 label = map.id
             }
-            nodes.push({
+            let new_node = {
                 id:`${server_id}_${map_id}`,
                 label:label,
-                color:server.color
-            })
+                color:server.color,
+                links:[]
+            }
+            nodes.push(new_node)
             //local connections
             if(map.l){
                 for(let other_map_id in map.l){
                     if(server.map[other_map_id]){
-                        links.push({
-                            source:`${server_id}_${map_id}`,
-                            target:`${server_id}_${other_map_id}`,
-                        })
+                        let neighbour_id = `${server_id}_${other_map_id}`
+                        new_node.links.push(neighbour_id)
+                        let new_link = {
+                            source:new_node.id,
+                            target:neighbour_id,
+                            particle_color:new_node.color
+                        }
+                        links.push(new_link)
                     }
                 }
             }
@@ -76,10 +103,14 @@ function server_list_to_nodes_and_links(server_list){
                     if(!other_map_id){
                         return
                     }
-                    links.push({
-                        source:`${server_id}_${map_id}`,
-                        target:`${other_server_id}_${other_map_id}`,
-                    })
+                    let neighbour_id = `${other_server_id}_${other_map_id}`
+                    new_node.links.push(neighbour_id)
+                    let new_link = {
+                        source:new_node.id,
+                        target:neighbour_id,
+                        particle_color:new_node.color
+                    }
+                    links.push(new_link)
                 }
             }
         }
@@ -88,39 +119,44 @@ function server_list_to_nodes_and_links(server_list){
     return {nodes,links}
 }
 
+function update_graph(){
+    if(!onb_map_graph){
+        return
+    }
+    let {nodes,links} = server_list_to_nodes_and_links(server_list)
+    onb_map_graph.graphData({nodes,links});
+}
+
 async function main(){
-    let server_list
     if(config.debug){
         server_list = sample_servers
     }else{
         server_list = await get_server_list(false)
     }
 
-    const {nodes,links} = server_list_to_nodes_and_links(server_list)
+    //register websocket listener
+    exampleSocket.onmessage = (event) =>{
+        if(event.origin != config.websocet_api_url || !event.isTrusted){
+            return //filter out all messages from peers
+        }
+        let data = JSON.parse(event.data)
+        //now update display
+        for(let server_id in data){
+            for(let field_name in data[server_id]){
+                if(field_name != "map"){
+                    continue // we only need to update the graph when the map changes
+                }
+                console.log(`updating ${server_list[server_id][field_name]} to ${data[server_id][field_name]}`)
+                server_list[server_id][field_name] = data[server_id][field_name]
+            }
+        }
+        update_graph()
+    }
 
-    // Random tree
-    const N = 300;
-    const gData = {
-      nodes: nodes,
-      links: links
-    };
-
-    const Graph = ForceGraph3D()
-      (document.getElementById('3d-graph'))
-        .graphData(gData)
-        .nodeAutoColorBy('group')
-        .nodeThreeObject(node => {
-          const sprite = new SpriteText(node.label);
-          sprite.material.depthWrite = false; // make sprite background transparent
-          sprite.color = node.color;
-          sprite.textHeight = 10;
-          sprite.fontFace = "courier new"
-          sprite.fontWeight = "bold"
-          return sprite;
-        });
+    update_graph()
 
     // Spread nodes a little wider
-    Graph.d3Force('charge').strength(-50);
+    onb_map_graph.d3Force('charge').strength(-50);
 }
 
 function get_server_list(get_test_list_instead) {

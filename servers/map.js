@@ -8,6 +8,7 @@ let server_list
 let onb_map_graph = ForceGraph3D()
     (document.getElementById('3d-graph'))
     .linkWidth(0.5)
+    .backgroundColor('black')
     .nodeThreeObject(node => {
         const sprite = new SpriteText(node.label);
         sprite.material.depthWrite = false; // make sprite background transparent

@@ -87,19 +87,18 @@ class ServerNode{
         }
         this.pre_address.textContent = this.data.address
         //-->In description window--> in address bar
-        if(!this.btn_copy_address){
-            this.btn_copy_address = create_append_add_classes("button",this.pre_address,[])
-            this.btn_copy_address.textContent = "copy address"
-            this.btn_copy_address.onclick = ()=>{
-                setClipboard(this.data.address)
-                this.btn_copy_address.textContent = "copied!"
-                setTimeout(()=>{
-                    this.btn_copy_address.textContent = "copy address"
-                },1000)
-            }
+        //this is jank, but because we update the this.pre_address.textContent we have to recreate the button each time
+        this.btn_copy_address = create_append_add_classes("button",this.pre_address,[])
+        this.btn_copy_address.textContent = "copy address"
+        this.btn_copy_address.onclick = ()=>{
+            setClipboard(this.data.address)
+            this.btn_copy_address.textContent = "copied!"
+            setTimeout(()=>{
+                this.btn_copy_address.textContent = "copy address"
+            },1000)
         }
          //status box
-         if(!this.div_status_box){
+        if(!this.div_status_box){
             this.div_status_box = create_append_add_classes("div",this.dark_overlay,["status"])
         }
         //in status box

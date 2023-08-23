@@ -136,6 +136,7 @@ button{
 .status > p{
     background-color: rgba(255, 255, 255, 0.503);
     padding:4px;
+    width:110px;
     border-radius: 8px;
     margin:3px;
 }

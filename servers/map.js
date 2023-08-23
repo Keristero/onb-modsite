@@ -150,7 +150,9 @@ async function main(){
 
     let whitelisted_fields = ["map","player_maps"]
     let catch_departures = null
+    let start_node = null
     let catch_arrivals = null
+    let end_node = null
 
     //register websocket listener
     exampleSocket.onmessage = (event) =>{
@@ -181,36 +183,34 @@ async function main(){
                     //if the player count goes down, a player has disconnected or gone to another server
                     if(missing_player){
                         let start_map_id = current_data.player_maps[missing_player]
-                        let start_node_id = `${server_id}_${start_map_id}`
+                        start_node_id = `${server_id}_${start_map_id}`
                         console.log('player went missing from ',start_map_id)
                         //set up a timeout to catch an arriving player within 500ms
                         if(catch_departures != null){
                             //if we were expecting a player to leave somewhere, we got em
-                            animate_server_transfer(start_node_id,catch_departures.end_node)
+                            animate_server_transfer(start_node_id,end_node)
                             catch_departures = null
                         }else{
                             //otherwise set up trigger for arrivals
                             catch_arrivals = setTimeout(()=>{
                                 catch_arrivals = null
                             },500)
-                            catch_arrivals.start_node = start_node_id
                         }
                     }
                     if(new_player){
                         let end_map_id = incoming_server_data.player_maps[new_player]
-                        let end_node_id = `${server_id}_${end_map_id}`
+                        end_node_id = `${server_id}_${end_map_id}`
                         console.log('player appeared in  ',end_map_id)
                         //check trigger
                         if(catch_arrivals != null){
                             //if we were expecting a player to arrive somewhere, we got em
-                            animate_server_transfer(catch_arrivals.start_node,end_node_id)
+                            animate_server_transfer(start_node,end_node_id)
                             catch_arrivals = null
                         }else{
                             //otherwise set up trigger for departures
                             catch_departures = setTimeout(()=>{
                                 catch_departures = null
                             },500)
-                            catch_departures.end_node = end_node_id
                         }
                     }
                 }

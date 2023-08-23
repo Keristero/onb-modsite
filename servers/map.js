@@ -150,9 +150,9 @@ async function main(){
 
     let whitelisted_fields = ["map","player_maps"]
     let catch_departures = null
-    let start_node = null
+    let start_node_id = null
     let catch_arrivals = null
-    let end_node = null
+    let end_node_id = null
 
     //register websocket listener
     exampleSocket.onmessage = (event) =>{
@@ -186,9 +186,9 @@ async function main(){
                         start_node_id = `${server_id}_${start_map_id}`
                         console.log('player went missing from ',start_map_id)
                         //set up a timeout to catch an arriving player within 500ms
-                        if(catch_departures != null){
+                        if(catch_departures != null && end_node_id){
                             //if we were expecting a player to leave somewhere, we got em
-                            animate_server_transfer(start_node_id,end_node)
+                            animate_server_transfer(start_node_id,end_node_id)
                             catch_departures = null
                         }else{
                             //otherwise set up trigger for arrivals
@@ -202,9 +202,9 @@ async function main(){
                         end_node_id = `${server_id}_${end_map_id}`
                         console.log('player appeared in  ',end_map_id)
                         //check trigger
-                        if(catch_arrivals != null){
+                        if(catch_arrivals != null && start_node_id){
                             //if we were expecting a player to arrive somewhere, we got em
-                            animate_server_transfer(start_node,end_node_id)
+                            animate_server_transfer(start_node_id,end_node_id)
                             catch_arrivals = null
                         }else{
                             //otherwise set up trigger for departures

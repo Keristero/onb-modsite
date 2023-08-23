@@ -149,7 +149,8 @@ async function main(){
     }
 
     let whitelisted_fields = ["map","player_maps"]
-    let catch_arrivals;
+    let catch_departures = null
+    let catch_arrivals = null
 
     //register websocket listener
     exampleSocket.onmessage = (event) =>{
@@ -169,6 +170,7 @@ async function main(){
             if(incoming_server_data?.map){
                 console.log(`updating ${current_data.map} to ${incoming_server_data.map}`)
                 current_data.map = incoming_server_data.map
+                update_graph()
             }
 
             if(incoming_server_data?.player_maps){
@@ -185,7 +187,7 @@ async function main(){
                         if(catch_departures != null){
                             //if we were expecting a player to leave somewhere, we got em
                             animate_server_transfer(start_node_id,catch_departures.end_node)
-                            catch_arrivals = null
+                            catch_departures = null
                         }else{
                             //otherwise set up trigger for arrivals
                             catch_arrivals = setTimeout(()=>{
@@ -213,11 +215,8 @@ async function main(){
                     }
                 }
                 current_data.player_maps = incoming_server_data.player_maps
-
-                //start a detection window for player movement
             }
         }
-        update_graph()
     }
 
     update_graph()

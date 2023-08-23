@@ -18,7 +18,7 @@ let onb_map_graph = ForceGraph3D()
         sprite.fontWeight = "bold"
         return sprite;})
     .onNodeHover(node => {
-        console.log(node)
+        //console.log(node)
     })
     .linkDirectionalParticles(2)
     .linkDirectionalParticleSpeed(0.001)
@@ -128,12 +128,28 @@ function update_graph(){
     onb_map_graph.graphData({nodes,links});
 }
 
+function find_missing_player(player_maps_old,player_maps_new){
+    for(let player_id in player_maps_old){
+        if(!player_maps_new[player_id]){
+            return player_id
+        }  
+    }
+    return null
+}
+
+function animate_server_transfer(start_node,end_node){
+    console.log("Player transfered servers!",start_node,end_node)
+}
+
 async function main(){
     if(config.debug){
         server_list = sample_servers
     }else{
         server_list = await get_server_list(false)
     }
+
+    let whitelisted_fields = ["map","player_maps"]
+    let catch_arrivals;
 
     //register websocket listener
     exampleSocket.onmessage = (event) =>{
@@ -143,12 +159,62 @@ async function main(){
         let data = JSON.parse(event.data)
         //now update display
         for(let server_id in data){
-            for(let field_name in data[server_id]){
-                if(field_name != "map"){
-                    continue // we only need to update the graph when the map changes
+            let incoming_server_data = data[server_id]
+            if(!server_list[server_id]){
+                server_list[server_id] = {}
+            }
+            let current_data = server_list[server_id]
+
+            //update map
+            if(incoming_server_data?.map){
+                console.log(`updating ${current_data.map} to ${incoming_server_data.map}`)
+                current_data.map = incoming_server_data.map
+            }
+
+            if(incoming_server_data?.player_maps){
+                //if there is already a player map, count the keys
+                if(current_data.player_maps){
+                    let missing_player = find_missing_player(current_data.player_maps,incoming_server_data.player_maps)
+                    let new_player = find_missing_player(incoming_server_data.player_maps,current_data.player_maps)
+                    //if the player count goes down, a player has disconnected or gone to another server
+                    if(missing_player){
+                        let start_map_id = current_data.player_maps[missing_player]
+                        let start_node_id = `${server_id}_${start_map_id}`
+                        console.log('player went missing from ',start_map_id)
+                        //set up a timeout to catch an arriving player within 500ms
+                        if(catch_departures != null){
+                            //if we were expecting a player to leave somewhere, we got em
+                            animate_server_transfer(start_node_id,catch_departures.end_node)
+                            catch_arrivals = null
+                        }else{
+                            //otherwise set up trigger for arrivals
+                            catch_arrivals = setTimeout(()=>{
+                                catch_arrivals = null
+                            },500)
+                            catch_arrivals.start_node = start_node_id
+                        }
+                    }
+                    if(new_player){
+                        let end_map_id = incoming_server_data.player_maps[new_player]
+                        let end_node_id = `${server_id}_${end_map_id}`
+                        console.log('player appeared in  ',end_map_id)
+                        //check trigger
+                        if(catch_arrivals != null){
+                            //if we were expecting a player to arrive somewhere, we got em
+                            animate_server_transfer(catch_arrivals.start_node,end_node_id)
+                            catch_arrivals = null
+                        }else{
+                            //otherwise set up trigger for departures
+                            catch_departures = setTimeout(()=>{
+                                catch_departures = null
+                            },500)
+                            catch_departures.end_node = end_node_id
+                        }
+                    }
                 }
-                console.log(`updating ${server_list[server_id][field_name]} to ${data[server_id][field_name]}`)
-                server_list[server_id][field_name] = data[server_id][field_name]
+                current_data.player_maps = incoming_server_data.player_maps
+
+                //start a detection window for player movement
             }
         }
         update_graph()

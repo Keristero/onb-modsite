@@ -41,6 +41,16 @@ class ServerNode{
     get is_online(){
         return (Date.now() - this.data.last_alive_ts) < (1000*60*60)
     }
+    get player_count(){
+        if(this.data?.player_maps){
+            return Object.keys(this.data?.player_maps).length
+        }
+        if(this.data?.online_players){
+            //deprecated
+            return this.data?.online_players
+        }
+        return 0
+    }
     update(latest_mod_data){
         this.data = latest_mod_data
         if(!this.element){
@@ -119,7 +129,7 @@ class ServerNode{
         if(!this.p_online_players){
             this.p_online_players = create_append_add_classes("p",this.div_status_box,["online_players"])
         }
-        this.p_online_players.textContent = `players: ${this.data.online_players}`
+        this.p_online_players.textContent = `players: ${this.player_count}`
         if(this.is_online){
             this.p_online_players.hidden = false
         }else{

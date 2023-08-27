@@ -2,29 +2,64 @@ import {config} from '../config.js'
 
 //we will request the server list here in future
 import sample_servers from "./samplejson.js" 
+import { CSS2DRenderer, CSS2DObject } from '//unpkg.com/three/examples/jsm/renderers/CSS2DRenderer.js';
+import { UnrealBloomPass } from '//unpkg.com/three/examples/jsm/postprocessing/UnrealBloomPass.js';
 
 const exampleSocket = new WebSocket(config.websocet_api_url, 'version1');
 let server_list
-let onb_map_graph = ForceGraph3D()
-    (document.getElementById('3d-graph'))
-    .linkWidth(0.5)
-    .backgroundColor('black')
-    .nodeThreeObject(node => {
-        const sprite = new SpriteText(node.label);
-        sprite.material.depthWrite = false; // make sprite background transparent
-        sprite.color = node.color;
-        sprite.textHeight = 10;
-        sprite.fontFace = "courier new"
-        sprite.fontWeight = "bold"
-        return sprite;})
-    .onNodeHover(node => {
-        //console.log(node)
-    })
-    .linkDirectionalParticles(2)
-    .linkDirectionalParticleSpeed(0.001)
-    .linkDirectionalParticleColor((link)=>link.particle_color)
-    .linkDirectionalParticleWidth(2)
 
+let css2drenderer = new CSS2DRenderer()
+
+let onb_map_graph = ForceGraph3D({
+    controlType: 'orbit',
+    extraRenderers: [css2drenderer]
+})
+(document.getElementById('3d-graph'))
+.linkWidth(1)
+.backgroundColor('rgb(2, 4, 27)')
+.onNodeHover(node => {
+    //console.log(node)
+})
+.linkDirectionalParticles(2)
+.linkDirectionalParticleSpeed(0.001)
+.linkDirectionalParticleColor((link)=>link.particle_color)
+.linkDirectionalParticleWidth(2)
+.nodeThreeObject(create_node_3d_object)
+
+
+const bloomPass = new UnrealBloomPass();
+bloomPass.strength = 1;
+bloomPass.radius = 0.5;
+bloomPass.threshold = 0.1;
+onb_map_graph.postProcessingComposer().addPass(bloomPass);
+
+function create_node_3d_object(node){
+    let node_object = new THREE.Object3D();
+    let box_geometry = new THREE.BoxGeometry(10+(Math.random()*20), 2, 10+(Math.random()*20))
+    // Create an array of materials to be used in a cube, one for each side
+    var cubeMaterialArray = [];
+
+    // order to add materials: x+,x-,y+,y-,z+,z-
+    cubeMaterialArray.push( new THREE.MeshBasicMaterial( { color: 0xffb300 } ) );
+    cubeMaterialArray.push( new THREE.MeshBasicMaterial( { color: 0xffb300 } ) );
+    cubeMaterialArray.push( new THREE.MeshBasicMaterial( { color: 0x11001c } ) );
+    cubeMaterialArray.push( new THREE.MeshBasicMaterial( { color: 0x11001c } ) );
+    cubeMaterialArray.push( new THREE.MeshBasicMaterial( { color: 0xffb300 } ) );
+    cubeMaterialArray.push( new THREE.MeshBasicMaterial( { color: 0xffb300 } ) );
+
+    //const box_mesh = new THREE.MeshBasicMaterial( {color: '#ffb300'} ); 
+    const box = new THREE.Mesh( box_geometry, cubeMaterialArray  ); 
+
+    const nodeEl = document.createElement('div');
+    nodeEl.textContent = node.label
+    nodeEl.style.color = 'white'//node.color;
+    nodeEl.className = 'node-label';
+    let threeD_text = new CSS2DObject(nodeEl);
+    node_object.add(threeD_text)
+    node_object.add(box)
+    return node_object
+
+}
 
 function get_server_id_from_address(server_list,address){
     for(let server_id in server_list){
@@ -72,7 +107,7 @@ function server_list_to_nodes_and_links(server_list){
             let new_node = {
                 id:`${server_id}_${map_id}`,
                 label:label,
-                color:server.color,
+                color:server.color,//server.color,
                 links:[]
             }
             nodes.push(new_node)

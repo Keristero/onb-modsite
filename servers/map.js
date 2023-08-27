@@ -13,11 +13,14 @@ let server_list
 
 //load surface reflection cubemap texture
 var loader = new THREE.CubeTextureLoader();
-loader.setPath( 'assets/images/cubemap/' );
+loader.setPath( 'assets/images/nt_tiles_cubemap/' );
+
+let cube_n = "nt_intro"
+
 var textureCube = loader.load( [
-	'dark-s_px.jpg', 'dark-s_nx.jpg',
-	'dark-s_py.jpg', 'dark-s_ny.jpg',
-	'dark-s_pz.jpg', 'dark-s_nz.jpg'
+	`${cube_n}_px.png`, `${cube_n}_nx.png`,
+	`${cube_n}_py.png`, `${cube_n}_ny.png`,
+	`${cube_n}_pz.png`, `${cube_n}_nz.png`
 ] );
 
 //add 2d text renderer
@@ -53,7 +56,7 @@ function create_node_3d_object(node){
     // Create an array of materials to be used in a cube, one for each side
     var cubeMaterialArray = [];
 
-    let surface_matarial = new THREE.MeshStandardMaterial( { color: 0x005903,metalness: 1,envMap: textureCube,roughness:0  } )
+    let surface_matarial = new THREE.MeshStandardMaterial( { color: 0xffffff,metalness: 1,envMap: textureCube,roughness:0  } )
     let side_matarial = new THREE.MeshBasicMaterial( { color: 0xffb300 } )
 
     // order to add materials: x+,x-,y+,y-,z+,z-

@@ -8,8 +8,22 @@ import { UnrealBloomPass } from '//unpkg.com/three/examples/jsm/postprocessing/U
 const exampleSocket = new WebSocket(config.websocet_api_url, 'version1');
 let server_list
 
+
+//setup
+
+//load surface reflection cubemap texture
+var loader = new THREE.CubeTextureLoader();
+loader.setPath( 'assets/images/cubemap/' );
+var textureCube = loader.load( [
+	'dark-s_px.jpg', 'dark-s_nx.jpg',
+	'dark-s_py.jpg', 'dark-s_ny.jpg',
+	'dark-s_pz.jpg', 'dark-s_nz.jpg'
+] );
+
+//add 2d text renderer
 let css2drenderer = new CSS2DRenderer()
 
+//create graph
 let onb_map_graph = ForceGraph3D({
     controlType: 'orbit',
     extraRenderers: [css2drenderer]
@@ -26,7 +40,7 @@ let onb_map_graph = ForceGraph3D({
 .linkDirectionalParticleWidth(2)
 .nodeThreeObject(create_node_3d_object)
 
-
+//setup bloom pass
 const bloomPass = new UnrealBloomPass();
 bloomPass.strength = 1;
 bloomPass.radius = 0.5;
@@ -39,13 +53,16 @@ function create_node_3d_object(node){
     // Create an array of materials to be used in a cube, one for each side
     var cubeMaterialArray = [];
 
+    let surface_matarial = new THREE.MeshStandardMaterial( { color: 0x005903,metalness: 1,envMap: textureCube,roughness:0  } )
+    let side_matarial = new THREE.MeshBasicMaterial( { color: 0xffb300 } )
+
     // order to add materials: x+,x-,y+,y-,z+,z-
-    cubeMaterialArray.push( new THREE.MeshBasicMaterial( { color: 0xffb300 } ) );
-    cubeMaterialArray.push( new THREE.MeshBasicMaterial( { color: 0xffb300 } ) );
-    cubeMaterialArray.push( new THREE.MeshBasicMaterial( { color: 0x11001c } ) );
-    cubeMaterialArray.push( new THREE.MeshBasicMaterial( { color: 0x11001c } ) );
-    cubeMaterialArray.push( new THREE.MeshBasicMaterial( { color: 0xffb300 } ) );
-    cubeMaterialArray.push( new THREE.MeshBasicMaterial( { color: 0xffb300 } ) );
+    cubeMaterialArray.push( side_matarial );
+    cubeMaterialArray.push( side_matarial );
+    cubeMaterialArray.push( surface_matarial );
+    cubeMaterialArray.push( surface_matarial );
+    cubeMaterialArray.push( side_matarial );
+    cubeMaterialArray.push( side_matarial );
 
     //const box_mesh = new THREE.MeshBasicMaterial( {color: '#ffb300'} ); 
     const box = new THREE.Mesh( box_geometry, cubeMaterialArray  ); 

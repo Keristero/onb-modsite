@@ -22,15 +22,20 @@ var textureCube = loader.load([
     `${cube_n}_pz.png`, `${cube_n}_nz.png`
 ]);
 //load skybox
-var loader2 = new THREE.CubeTextureLoader();
-loader2.setPath('assets/images/nt_space/');
+loader.setPath('assets/images/nt_space/');
 
 let sky_n = "nt_space"
-var skyTextureCube = loader2.load([
+var skyTextureCube = loader.load([
     `${sky_n}_px.png`, `${sky_n}_nx.png`,
     `${sky_n}_py.png`, `${sky_n}_ny.png`,
     `${sky_n}_pz.png`, `${sky_n}_nz.png`
 ]);
+//load tile textures
+const texture_loader = new THREE.TextureLoader();
+var tile_texture = texture_loader.load(`assets/images/map_misc/styled_tile.png`);
+tile_texture.wrapS = THREE.RepeatWrapping;
+tile_texture.wrapT = THREE.RepeatWrapping;
+tile_texture.repeat.set( 0.5,0.5);
 
 
 //add 2d text renderer
@@ -53,8 +58,13 @@ let onb_map_graph = ForceGraph3D({
     .linkDirectionalParticleWidth(2)
     .nodeThreeObject(create_node_3d_object)
 
+
+//remove default light
+let default_graph_sunlight = onb_map_graph.scene().getObjectsByProperty('id')
+console.log(default_graph_sunlight)
+onb_map_graph.scene().remove(default_graph_sunlight)
 //use skybox texture
-onb_map_graph.scene().background = skyTextureCube    
+onb_map_graph.scene().background = skyTextureCube
 
 //setup bloom pass
 const bloomPass = new UnrealBloomPass();
@@ -64,12 +74,38 @@ bloomPass.threshold = 0.5;
 onb_map_graph.postProcessingComposer().addPass(bloomPass);
 
 function create_node_3d_object(node) {
-    let node_object = new THREE.Object3D();
-    let box_geometry = new THREE.BoxGeometry(10 + (Math.random() * 20), 2, 10 + (Math.random() * 20))
+    let node_object = new THREE.Object3D(); 
+    var sx = THREE.MathUtils.randInt(5,20)*2,
+    sy = 2,
+    sz = THREE.MathUtils.randInt(5,20)*2;
+    let box_geometry = new THREE.BoxGeometry(1,1,1)
+
+    //set up UVs for the repeating texture on the box
+    var pos = box_geometry.getAttribute( 'position' ),
+    uv = box_geometry.getAttribute( 'uv' );
+    for( var i=0; i<pos.count; i++ )
+    {
+        var x = sx * (pos.getX(i)+0.5),
+            y = sy * (pos.getY(i)+0.5),
+            z = sz * (pos.getZ(i)+0.5);
+        
+        if( i<8 ) uv.setXY( i, z, y );
+        else if( i<16 ) uv.setXY( i, x, z );
+        else uv.setXY( i, y, x );
+    }
+    uv.needsUpdate = true;
+
     // Create an array of materials to be used in a cube, one for each side
     var cubeMaterialArray = [];
 
-    let surface_matarial = new THREE.MeshBasicMaterial({ color: 0xffffff, metalness: 1, envMap: textureCube, roughness: 0 })
+    let surface_matarial = new THREE.MeshBasicMaterial({
+        //metalness: 1,
+        map: tile_texture,
+        //bumpMap: tile_bump_texture,
+        //metalnessMap:tile_metalnessMap,
+        envMap: textureCube,
+        roughness: 0
+    })
     let side_matarial = new THREE.MeshBasicMaterial({ color: 0xffb300 })
 
     // order to add materials: x+,x-,y+,y-,z+,z-
@@ -82,6 +118,7 @@ function create_node_3d_object(node) {
 
     //const box_mesh = new THREE.MeshBasicMaterial( {color: '#ffb300'} ); 
     const box = new THREE.Mesh(box_geometry, cubeMaterialArray);
+    box.scale.set( sx, sy, sz );
 
     const nodeEl = document.createElement('div');
     nodeEl.textContent = node.label

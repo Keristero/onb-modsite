@@ -4,12 +4,37 @@ import { config } from '../config.js'
 import sample_servers from "./samplejson.js"
 import { CSS2DRenderer, CSS2DObject } from '//unpkg.com/three/examples/jsm/renderers/CSS2DRenderer.js';
 import { UnrealBloomPass } from '//unpkg.com/three/examples/jsm/postprocessing/UnrealBloomPass.js';
+import GUI from 'https://cdn.jsdelivr.net/npm/lil-gui@0.18/+esm';
 
 const exampleSocket = new WebSocket(config.websocet_api_url, 'version1');
 let server_list
+let node_label_text_objects = []
 
 
 //setup
+//create gui
+const gui = new GUI();
+gui.title("Map Settings")
+const gui_setings = {
+	"Show Map Names": true,
+	myString: 'lil-gui',
+	myNumber: 1,
+	myFunction: function() { alert( 'hi' ) }
+}
+
+gui.add( gui_setings, "Show Map Names" ); 	// checkbox
+//gui.add( gui_setings, 'myString' ); 	// text field
+//gui.add( gui_setings, 'myNumber' ); 	// number field
+//gui.add( gui_setings, 'myFunction' ); 	// button
+
+gui.onChange( event => {
+    let {object,property,value} = event
+    if(property == "Show Map Names"){
+        for(let label_object of node_label_text_objects){
+            label_object.visible = value
+        }
+    }
+} );
 
 //load surface reflection cubemap texture
 var loader = new THREE.CubeTextureLoader();
@@ -125,6 +150,7 @@ function create_node_3d_object(node) {
     nodeEl.style.color = 'white'//node.color;
     nodeEl.className = 'node-label';
     let threeD_text = new CSS2DObject(nodeEl);
+    node_label_text_objects.push(threeD_text)
     node_object.add(threeD_text)
     node_object.add(box)
     return node_object
@@ -229,7 +255,12 @@ function update_graph() {
     if (!onb_map_graph) {
         return
     }
+    //reset stuff that needs resetting
+    node_label_text_objects = []
+
+    //reload the data
     let { nodes, links } = server_list_to_nodes_and_links(server_list)
+    //recreate the graph
     onb_map_graph.graphData({ nodes, links });
 }
 

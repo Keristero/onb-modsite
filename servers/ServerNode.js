@@ -107,6 +107,27 @@ class ServerNode{
                 this.btn_copy_address.textContent = "copy address"
             },1000)
         }
+        //-->In description window--> in address bar
+        //jack in button form
+        if(!this.frm_jack_in){
+            this.frm_jack_in = create_append_add_classes("form",this.pre_address,["jack_in_form"])
+            this.frm_jack_in.method = "GET"
+        }
+        if(!this.input_jack_in){
+            this.input_jack_in = create_append_add_classes("input",this.frm_jack_in,["jack_in_button"])
+            this.input_jack_in.value = "Jack In"
+            this.input_jack_in.type = "submit"
+            this.input_jack_in.onclick = ()=>{return false}
+        }
+        if(this.is_online){
+            this.input_jack_in.hidden = false
+            let address = this.data.address.split(":")[0]
+            let port = this.data.address.split(":")[1]
+            let data = this.data.data
+            this.frm_jack_in.href = `onb://jackin?address=${address}&port=${port}&data=${data}`
+        }else{
+            this.input_jack_in.hidden = true
+        }
          //status box
         if(!this.div_status_box){
             this.div_status_box = create_append_add_classes("div",this.dark_overlay,["status"])
@@ -126,6 +147,7 @@ class ServerNode{
             this.p_online_status.textContent = "OFFLINE"
         }
 
+        //status, player count
         if(!this.p_online_players){
             this.p_online_players = create_append_add_classes("p",this.div_status_box,["online_players"])
         }

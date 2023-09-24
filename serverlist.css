@@ -180,3 +180,20 @@ button{
 .address > button:hover{
     background-color: rgba(156, 156, 156, 0.265);
 }
+.jack_in_form{
+    float:right;
+    padding:0px;
+    margin:0px;
+}
+.jack_in_button{
+    padding:0px;
+    margin: 0px;
+    float: left;
+    height: 25px;
+    width: 128px;
+    box-shadow: none;
+    color:white;
+    font-size: 15px;
+    background-color: rgba(0, 0, 0, 0.265);
+    font-family: BN6;
+}

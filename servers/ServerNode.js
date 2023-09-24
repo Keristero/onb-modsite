@@ -124,7 +124,7 @@ class ServerNode{
             let address = this.data.address.split(":")[0]
             let port = this.data.address.split(":")[1]
             let data = this.data.data
-            this.frm_jack_in.href = `onb://jackin?address=${address}&port=${port}&data=${data}`
+            this.frm_jack_in.action = `onb://jackin?address=${address}&port=${port}&data=${data}`
         }else{
             this.input_jack_in.hidden = true
         }

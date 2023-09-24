@@ -109,24 +109,18 @@ class ServerNode{
         }
         //-->In description window--> in address bar
         //jack in button form
-        if(!this.frm_jack_in){
-            this.frm_jack_in = create_append_add_classes("form",this.pre_address,["jack_in_form"])
-            this.frm_jack_in.method = "GET"
-        }
-        if(!this.input_jack_in){
-            this.input_jack_in = create_append_add_classes("input",this.frm_jack_in,["jack_in_button"])
-            this.input_jack_in.value = "Jack In"
-            this.input_jack_in.type = "submit"
-            this.input_jack_in.onclick = ()=>{return false}
+        if(!this.a_jack_in){
+            this.a_jack_in = create_append_add_classes("a",this.pre_address,["jack_in_button"])
+            this.a_jack_in.textContent = "Jack In!"
         }
         if(this.is_online){
-            this.input_jack_in.hidden = false
+            this.a_jack_in.hidden = false
             let address = this.data.address.split(":")[0]
             let port = this.data.address.split(":")[1]
             let data = this.data.data
-            this.frm_jack_in.action = `onb://jackin?address=${address}&port=${port}&data=${data}`
+            this.a_jack_in.href = `onb://jackin?address=${address}&port=${port}&data=${data}`
         }else{
-            this.input_jack_in.hidden = true
+            this.a_jack_in.hidden = true
         }
          //status box
         if(!this.div_status_box){

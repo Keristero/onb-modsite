@@ -109,10 +109,8 @@ class ServerNode{
         }
         //-->In description window--> in address bar
         //jack in button form
-        if(!this.a_jack_in){
-            this.a_jack_in = create_append_add_classes("a",this.pre_address,["jack_in_button"])
-            this.a_jack_in.textContent = "Jack In!"
-        }
+        this.a_jack_in = create_append_add_classes("a",this.pre_address,["jack_in_button"])
+        this.a_jack_in.textContent = "Jack In!"
         if(this.is_online){
             this.a_jack_in.hidden = false
             let address = this.data.address.split(":")[0]

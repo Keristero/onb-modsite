@@ -6,6 +6,20 @@ const div_mods = document.getElementById('servers')
 const div_filters = document.getElementById('filters')
 const server_nodes = {}
 
+//filtering stuff
+import {ModsFilter,ModsSorter,detail_filters,sort_options,search_aliases} from './server_filter.js'
+let selection_changed_timeout;
+let filter = new ModsFilter()
+let sorter = new ModsSorter()
+
+div_filters.appendChild(filter.get_html_element())
+filter.filter_changed_callback = (filter_id,filter_value)=>{
+    filter_mod_list(filter_id,filter_value)
+}
+div_filters.appendChild(sorter.get_html_element())
+sorter.selection_changed_callback = (sorter_id)=>{
+    sort_mod_list(sorter_id)
+}
 
 //we will request the server list hre in future
 import sample_servers from "./samplejson.js" 
@@ -65,30 +79,102 @@ function get_server_list(get_test_list_instead) {
     })
 }
 
-function update_server_nodes(mod_nodes) {
+function update_server_nodes(server_nodes) {
     for (let server_id in server_list) {
         let server_data = server_list[server_id]
 
         if(!server_data){
             return
         }
-        if (mod_nodes[server_id]) {
+        if (server_nodes[server_id]) {
             //if a mod node already exists for this mod
             console.log('updating',server_id)
-            mod_nodes[server_id].update(server_data)
+            server_nodes[server_id].update(server_data)
         } else {
             console.log('creating',server_id)
-            let new_mod_node = new ServerNode(server_id, server_data)
-            mod_nodes[server_id] = new_mod_node
+            let new_server_node = new ServerNode(server_id, server_data)
+            server_nodes[server_id] = new_server_node
         }
     }
 }
 
-function render_server_nodes(mod_nodes) {
-    for (let mod_id in mod_nodes) {
-        let mod_node = mod_nodes[mod_id]
-        div_mods.appendChild(mod_node.get_html_element())
+function render_server_nodes(server_nodes) {
+    for (let mod_id in server_nodes) {
+        let server_node = server_nodes[mod_id]
+        div_mods.appendChild(server_node.get_html_element())
     }
 }
 
+function sort_mod_list(sorter_id){
+    let sorter = sort_options[sorter_id]
+    let server_node_keys = Object.keys(server_nodes)
+    let sort_func = function(a,b){
+        let mod_a = server_nodes[a]
+        let mod_b = server_nodes[b]
+        return mod_b.details[sorter.sort_detail] - mod_a.details[sorter.sort_detail]
+    }
+    server_node_keys.sort(sort_func)
+    let i = 1
+    for(let key of server_node_keys){
+        let server_node = server_nodes[key]
+        server_node.element.style.order = i
+        i++
+    }
+}
+
+function filter_mod_list(filter_id,filter_value){
+    let filter_data = detail_filters[filter_id]
+    //if no filter value is provided, search for wildcard
+    filter_value = filter_value.toLowerCase()
+    if(filter_value == ""){
+        filter_value = "."
+    }
+    for(let alias_array of search_aliases){
+        if(alias_array.includes(filter_value)){
+            filter_value = alias_array.join("|")
+            console.log("repalced filter with",filter_value)
+        }
+    }
+    let filterRegexp = new RegExp(filter_value,'gi')
+    //make a list of all the detail keys to filter against
+    let filter_ids = [filter_id]
+    //check if each mod should be hidden by comparing the filter_value to the details
+    let matches = 0
+    for(let mod_id in server_nodes){
+        let server_node = server_nodes[mod_id]
+        let node_should_be_hidden = true
+        for(let filter_id of filter_ids){
+            if(!should_node_be_hidden(server_node,filter_id,filterRegexp)){
+                node_should_be_hidden = false
+                break
+            }
+        }
+        server_node.set_hidden(node_should_be_hidden)
+        if(!node_should_be_hidden){
+            matches++
+        }
+    }
+    //update filter title
+    filter.p_name.textContent = `Filter (${matches}) results`
+}
+
+function should_node_be_hidden(server_node,filter_id,regexp){
+    let key_value = server_node.details[filter_id]
+    let should_hide = true
+    if(key_value == undefined){
+        should_hide = true
+    }else if(Array.isArray(key_value)){
+        for(let value of key_value){
+            if(value.match(regexp)){
+                should_hide = false
+                break;
+            }
+        }
+    }else if(key_value.match(regexp)){
+        should_hide = false
+    }
+    return should_hide
+}
+
 main()
+sort_mod_list("player_count")

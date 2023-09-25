@@ -4,51 +4,6 @@
 
 /* main styles */
 
-body{
-    background-color: lightblue;
-    image-rendering: pixelated;
-    font-family: BN6;
-}
-
-div {
-    padding:0;
-    margin:0;
-}
-p{
-    padding:0;
-    margin:0;
-}
-input{
-    margin:10px;
-    padding:2px;
-    font-family: BN6;
-    font-size:medium;
-}
-select{
-    margin:10px;
-    padding:2px;
-    font-family: BN6;
-    font-size:medium;
-}
-
-.disable_selection {
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -o-user-select: none;
-    user-select: none;
-}
-
-button{
-    text-align: center;
-    background-color:rgba(255, 255, 255, 0.329);
-    overflow:hidden;
-    box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.287);
-    height:fit-content;
-    width:fit-content;
-    padding:10px;
-}
-
 #filters > button{
     margin: 10px;
 }

@@ -1,0 +1,71 @@
+/* main styles */
+
+body{
+    background-color: lightblue;
+    image-rendering: pixelated;
+    font-family: BN6;
+}
+
+div {
+    padding:0;
+    margin:0;
+}
+p{
+    padding:0;
+    margin:0;
+}
+input{
+    margin:10px;
+    padding:2px;
+    font-family: BN6;
+    font-size:medium;
+}
+select{
+    margin:10px;
+    padding:2px;
+    font-family: BN6;
+    font-size:medium;
+}
+
+#filters {
+    width: 100%;
+    display: flex;
+    gap: 0px 10px;
+    padding-bottom: 20px;
+    width:fit-content;
+}
+
+.filter{
+    text-align: left;
+    background-color:rgba(255, 255, 255, 0.329);
+    overflow:hidden;
+    box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.287);
+}
+
+.filter p{
+    display:block;
+    overflow:hidden;
+    font-weight: bold;
+    top: 0px;
+    left: 0px;
+    height:15px;
+    background-color: white;
+}
+
+.disable_selection {
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+button{
+    text-align: center;
+    background-color:rgba(255, 255, 255, 0.329);
+    overflow:hidden;
+    box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.287);
+    height:fit-content;
+    width:fit-content;
+    padding:10px;
+}

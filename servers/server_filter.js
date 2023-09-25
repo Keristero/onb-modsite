@@ -5,37 +5,19 @@ const detail_filters = {
     name:{
         display_name:"Name",
     },
-    type:{
-        display_name:"Mod Type",
-    },
-    id:{
-        display_name:"Package ID",
-    },
-    element:{
-        display_name:"Element",
-    },
-    card_code:{
-        display_name:"Card Code",
-    },
-    card_class:{
-        display_name:"Card Class",
-    },
-    author_name:{
-        display_name:"Author",
-    },
     tags:{
         display_name:"Tags",
     },
 }
 
 const sort_options={
+    player_count:{
+        display_name:"Player Count",
+        sort_detail:"player_count"
+    },
     timestamp:{
         display_name:"Date",
         sort_detail:"timestamp"
-    },
-    damage:{
-        display_name:"Damage",
-        sort_detail:"damage"
     },
 }
 

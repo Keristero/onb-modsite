@@ -2,66 +2,12 @@
 @font-face { font-family: BN6; src: url('assets/fonts/BN6FontThin.ttf'); }
 @font-face { font-family: BN6;font-weight: bold; src: url('assets/fonts/BN6FontBold.ttf'); }  
 
-/* main styles */
-
-body{
-    background-color: lightblue;
-    image-rendering: pixelated;
-    font-family: BN6;
-}
-
-div {
-    padding:0;
-    margin:0;
-}
-p{
-    padding:0;
-    margin:0;
-}
-input{
-    margin:10px;
-    padding:2px;
-    font-family: BN6;
-    font-size:medium;
-}
-select{
-    margin:10px;
-    padding:2px;
-    font-family: BN6;
-    font-size:medium;
-}
-
-#filters {
-    width: 100%;
-    display: flex;
-    gap: 0px 10px;
-    padding-bottom: 20px;
-    width:fit-content;
-}
-
 #mods {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 10px 10px;
-}
-
-button{
-    text-align: center;
-    background-color:rgba(255, 255, 255, 0.329);
-    overflow:hidden;
-    box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.287);
-    height:fit-content;
-    width:fit-content;
-    padding:10px;
-}
-
-.filter{
-    text-align: left;
-    background-color:rgba(255, 255, 255, 0.329);
-    overflow:hidden;
-    box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.287);
 }
 
 .mod{
@@ -84,14 +30,6 @@ button{
 
 .selected:hover{
     box-shadow: 0px 0px 20px rgba(6, 2, 255, 0.863);
-}
-
-.disable_selection {
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -o-user-select: none;
-    user-select: none;
 }
 
 .detail_view{

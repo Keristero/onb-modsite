@@ -32,6 +32,31 @@ class ServerNode{
             this.element.style.display = "block"
         }
     }
+    cache_details(){
+        //cache details for detailed view and fast filtering and sorting
+        //all values used in filters should be strings or an array of strings,
+        this.details = {
+            name:this.data.name,
+            tags:this.data.tags || [],
+            player_count:this.player_count
+        }
+        //Construct a string with all other details, used for searching all details at once
+        let any_search_string = ""
+        for(let key in this.details){
+            let value = this.details[key]
+            if(value == "" || value == null){
+                continue
+            }
+            if(Array.isArray(value)){
+                for(let item of value){
+                    any_search_string += (item+" ")
+                }
+            }else{
+                any_search_string += (value+" ")
+            }
+        }
+        this.details.any = any_search_string
+    }
     get_html_element(){
         return this.element
     }
@@ -53,6 +78,7 @@ class ServerNode{
     }
     update(latest_mod_data){
         this.data = latest_mod_data
+        this.cache_details()
         if(!this.element){
             this.element = document.createElement('div')
             this.element.style.backgroundColor = this.data.color

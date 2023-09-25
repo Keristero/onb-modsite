@@ -9,6 +9,7 @@ const server_nodes = {}
 //filtering stuff
 import {ModsFilter,ModsSorter,detail_filters,sort_options,search_aliases} from './server_filter.js'
 let selection_changed_timeout;
+let current_sorter_id = "player_count"
 let filter = new ModsFilter()
 let sorter = new ModsSorter()
 
@@ -18,7 +19,8 @@ filter.filter_changed_callback = (filter_id,filter_value)=>{
 }
 div_filters.appendChild(sorter.get_html_element())
 sorter.selection_changed_callback = (sorter_id)=>{
-    sort_mod_list(sorter_id)
+    current_sorter_id = sorter_id
+    sort_mod_list(current_sorter_id)
 }
 
 //we will request the server list hre in future
@@ -40,6 +42,7 @@ exampleSocket.onmessage = (event) =>{
         }
     }
     update_server_nodes(server_nodes)
+    sort_mod_list(current_sorter_id)
 }
 
 let btn_mods = create_append_add_classes("button",div_filters,[])
@@ -177,4 +180,4 @@ function should_node_be_hidden(server_node,filter_id,regexp){
 }
 
 main()
-sort_mod_list("player_count")
+sort_mod_list(current_sorter_id)

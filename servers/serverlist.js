@@ -64,6 +64,7 @@ async function main(){
     }
     update_server_nodes(server_nodes)
     render_server_nodes(server_nodes)
+    sort_mod_list(current_sorter_id)
 }
 
 function get_server_list(get_test_list_instead) {
@@ -180,4 +181,3 @@ function should_node_be_hidden(server_node,filter_id,regexp){
 }
 
 main()
-sort_mod_list(current_sorter_id)

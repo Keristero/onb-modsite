@@ -2,9 +2,10 @@ import { config } from '../config.js'
 
 //we will request the server list here in future
 import sample_servers from "./samplejson.js"
-import { CSS2DRenderer, CSS2DObject } from '//unpkg.com/three/examples/jsm/renderers/CSS2DRenderer.js';
-import { UnrealBloomPass } from '//unpkg.com/three/examples/jsm/postprocessing/UnrealBloomPass.js';
+import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import GUI from 'https://cdn.jsdelivr.net/npm/lil-gui@0.18/+esm';
+import * as THREE from 'three';
 
 const exampleSocket = new WebSocket(config.websocet_api_url, 'version1');
 let server_list

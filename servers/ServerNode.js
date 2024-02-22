@@ -70,10 +70,6 @@ class ServerNode{
         if(this.data?.player_maps){
             return Object.keys(this.data?.player_maps).length
         }
-        if(this.data?.online_players){
-            //deprecated
-            return this.data?.online_players
-        }
         return 0
     }
     update(latest_mod_data){

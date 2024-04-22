@@ -135,10 +135,12 @@ class ServerNode{
         this.a_jack_in.textContent = "Jack In!"
         if(this.is_online){
             this.a_jack_in.hidden = false
-            let address = this.data.address.split(":")[0]
-            let port = this.data.address.split(":")[1]
-            let data = this.data.data
-            this.a_jack_in.href = `onb://jackin?address=${address}&port=${port}&data=${data}`
+            let address = this.data?.address?.split(":")[0]
+            let port = this.data?.address?.split(":")[1]
+            let data = this.data?.data || ""
+            if(address && port && data){
+                this.a_jack_in.href = `onb://jackin?address=${address}&port=${port}&data=${data}`
+            }
         }else{
             this.a_jack_in.hidden = true
         }

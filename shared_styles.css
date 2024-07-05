@@ -1,9 +1,31 @@
 /* main styles */
 
+.topbar{
+    width:100%;
+    padding:0px;
+    margin:0px;
+    height:78px;
+}
+
+#filters {
+    height:60px;
+    width:100%;
+    position: fixed;
+    z-index: 10;
+    padding:5px;
+    margin:0px;
+}
+
+#filters > * {
+    background-color: rgb(209, 238, 248)
+}
+
 body{
     background-color: lightblue;
     image-rendering: pixelated;
     font-family: BN6;
+    margin: 0;
+    padding: 0;
 }
 
 div {

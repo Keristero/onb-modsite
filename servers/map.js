@@ -2,10 +2,9 @@ import { config } from '../config.js'
 
 //we will request the server list here in future
 import sample_servers from "./samplejson.js"
-import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
-import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
-import GUI from 'https://cdn.jsdelivr.net/npm/lil-gui@0.18/+esm';
 import * as THREE from 'three';
+import { CSS2DRenderer, CSS2DObject} from 'three/addons/renderers/CSS2DRenderer.js';
+import GUI from 'https://cdn.jsdelivr.net/npm/lil-gui@0.18/+esm';
 
 const exampleSocket = new WebSocket(config.websocet_api_url, 'version1');
 let server_list
@@ -91,13 +90,6 @@ console.log(default_graph_sunlight)
 onb_map_graph.scene().remove(default_graph_sunlight)
 //use skybox texture
 onb_map_graph.scene().background = skyTextureCube
-
-//setup bloom pass
-const bloomPass = new UnrealBloomPass();
-bloomPass.strength = 1;
-bloomPass.radius = 0.2;
-bloomPass.threshold = 0.5;
-onb_map_graph.postProcessingComposer().addPass(bloomPass);
 
 function create_node_3d_object(node) {
     let node_object = new THREE.Object3D(); 

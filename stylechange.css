@@ -3,6 +3,7 @@
 @font-face { font-family: BN6;font-weight: bold; src: url('assets/fonts/BN6FontBold.ttf'); }  
 
 #mods {
+    margin:5px;
     width: 100%;
     display: flex;
     flex-wrap: wrap;

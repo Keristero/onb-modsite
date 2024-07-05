@@ -4,6 +4,7 @@ import {create_append_add_classes} from '../helpers.js'
 import {downloadZip} from '../libs/client-zip.js'
 import {hide_detail_view} from './detail_view.js'
 import {config} from '../config.js'
+import sample_mods from "./samplejson.js" 
 
 const div_mods = document.getElementById('mods')
 const div_filters = document.getElementById('filters')
@@ -82,7 +83,12 @@ btn_map.onclick = ()=>{
     window.open("map.html");
 }
 
-let mod_list = await get_mod_list()
+let mod_list
+if(config.debug){
+    mod_list = sample_mods
+}else{
+    mod_list = await get_mod_list(false)
+}
 update_mod_nodes(mod_list, mod_nodes)
 render_mod_nodes(mod_nodes)
 filter_mod_list('any',"")

@@ -138,7 +138,7 @@ class ServerNode{
             let address = this.data?.address?.split(":")[0]
             let port = this.data?.address?.split(":")[1]
             let data = this.data?.data || ""
-            if(address && port && data){
+            if(address && port){
                 this.a_jack_in.href = `onb://jackin?address=${address}&port=${port}&data=${data}`
             }
         }else{

@@ -177,11 +177,22 @@ function get_server_map_with_incoming_data(server, data) {
     return 'default'
 }
 
+function verify_link_validity(nodes,source_id,target_id){
+    //check that nodes with id source_id and target_id both exist
+    let source_node = nodes.find(node => node.id == source_id)
+    let target_node = nodes.find(node => node.id == target_id)
+    if (!source_node || !target_node) {
+        return false
+    }
+    return true
+}
+
 function server_list_to_nodes_and_links(server_list) {
     console.log(server_list)
     let nodes = []
     let links = []
     let next_node_id = 0
+    //create nodes
     for (let server_id in server_list) {
         let server = server_list[server_id]
         if (!server?.map) {
@@ -200,18 +211,31 @@ function server_list_to_nodes_and_links(server_list) {
                 links: []
             }
             nodes.push(new_node)
+        }
+    }
+    //create links
+    for (let server_id in server_list) {
+        let server = server_list[server_id]
+        if (!server?.map) {
+            continue
+        }
+        for (let map_id in server.map) {
+            let map = server.map[map_id]
+            let node = nodes.find(node => node.id == `${server_id}_${map_id}`)
             //local connections
             if (map.l) {
                 for (let other_map_id in map.l) {
                     if (server.map[other_map_id]) {
                         let neighbour_id = `${server_id}_${other_map_id}`
-                        new_node.links.push(neighbour_id)
+                        node.links.push(neighbour_id)
                         let new_link = {
-                            source: new_node.id,
+                            source: node.id,
                             target: neighbour_id,
-                            particle_color: new_node.color
+                            particle_color: node.color
                         }
-                        links.push(new_link)
+                        if(verify_link_validity(nodes, node.id, neighbour_id)){
+                            links.push(new_link)
+                        }
                     }
                 }
             }
@@ -225,17 +249,20 @@ function server_list_to_nodes_and_links(server_list) {
                     let other_server = server_list[other_server_id]
                     let data = map.r[other_server_address].data
                     let other_map_id = get_server_map_with_incoming_data(other_server, data)
+                    console.log(other_map_id)
                     if (!other_map_id) {
                         return
                     }
                     let neighbour_id = `${other_server_id}_${other_map_id}`
-                    new_node.links.push(neighbour_id)
+                    node.links.push(neighbour_id)
                     let new_link = {
-                        source: new_node.id,
+                        source: node.id,
                         target: neighbour_id,
-                        particle_color: new_node.color
+                        particle_color: node.color
                     }
-                    links.push(new_link)
+                    if(verify_link_validity(nodes, node.id, neighbour_id)){
+                        links.push(new_link)
+                    }
                 }
             }
         }

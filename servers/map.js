@@ -82,6 +82,7 @@ let onb_map_graph = ForceGraph3D({
     .linkDirectionalParticleColor((link) => link.particle_color)
     .linkDirectionalParticleWidth(2)
     .nodeThreeObject(create_node_3d_object)
+    .enableNodeDrag(false)
 
 
 //remove default light

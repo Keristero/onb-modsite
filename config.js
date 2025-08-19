@@ -1,6 +1,6 @@
 const config = {
-    websocet_api_url:"wss://onb.keristero.com",
-    api_url:"https://onb.keristero.com",
+    websocet_api_url:"wss://www.keristero.xyz",
+    api_url:"https://www.keristero.xyz",
     debug:false
 }
 //when developing with local API update this to http://localhost:80

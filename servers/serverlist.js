@@ -113,10 +113,10 @@ function sort_mod_list(sorter_id){
     let sorter = sort_options[sorter_id]
     let server_node_keys = Object.keys(server_nodes)
     let sort_func = function(a,b){
-        let mod_a_online_bonus = mod_a.is_online ? 1 : 0
-        let mod_b_online_bonus = mod_b.is_online ? 1 : 0
         let mod_a = server_nodes[a]
         let mod_b = server_nodes[b]
+        let mod_a_online_bonus = mod_a.is_online ? 1 : 0
+        let mod_b_online_bonus = mod_b.is_online ? 1 : 0
         return (mod_b.details[sorter.sort_detail] + mod_b_online_bonus) - (mod_a.details[sorter.sort_detail] + mod_a_online_bonus)
     }
     server_node_keys.sort(sort_func)

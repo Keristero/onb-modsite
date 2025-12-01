@@ -375,7 +375,7 @@ function initSnowEffect() {
                 particleArray[i + 9] = fadeTimer;
             } else {
                 const t = Math.max(0, y / documentHeight);
-                const dampedT = 0.05 + Math.pow(t, 1.5) * 0.35;
+                const dampedT = 0.05 + Math.pow(t, 1.5) * 0.15;
                 
                 let vx = 0;
                 const time = startTime + t;

@@ -374,12 +374,13 @@ function initSnowEffect() {
                 particleArray[i + 8] = settled;
                 particleArray[i + 9] = fadeTimer;
             } else {
-                const t = y / documentHeight;
+                const t = Math.max(0, y / documentHeight);
+                const dampedT = 0.05 + Math.pow(t, 1.5) * 0.35;
                 
                 let vx = 0;
                 const time = startTime + t;
                 const sinIndex = ((time * sinTableLength) | 0) % sinTableLength;
-                vx += sinTable[sinIndex] * t;
+                vx += sinTable[sinIndex] * dampedT;
                 
                 vx += globalWind * CONFIG.physics.windStrength * CONFIG.physics.windMultiplier;
                 

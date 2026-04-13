@@ -89,6 +89,10 @@ if(config.debug){
 }else{
     mod_list = await get_mod_list(false)
 }
+if(!mod_list){
+    show_api_unavailable_message(div_mods)
+    throw new Error("API unavailable")
+}
 update_mod_nodes(mod_list, mod_nodes)
 render_mod_nodes(mod_nodes)
 filter_mod_list('any',"")
@@ -223,7 +227,20 @@ function get_mod_list() {
         .then(data => {
             resolve(data)
         })
+        .catch(() => resolve(null))
     })
+}
+
+function show_api_unavailable_message(container) {
+    container.style.display = "flex"
+    container.style.justifyContent = "center"
+    container.style.alignItems = "center"
+    container.style.height = "80vh"
+    let msg = document.createElement('p')
+    msg.innerHTML = 'Check out the new modsite at <a href="https://onb.keristero.com/">https://onb.keristero.com/</a>'
+    msg.style.textAlign = "center"
+    msg.style.fontSize = "1.5em"
+    container.appendChild(msg)
 }
 
 function modnode_selection_changed_callback(){

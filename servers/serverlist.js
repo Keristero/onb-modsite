@@ -62,6 +62,10 @@ async function main(){
     }else{
         server_list = await get_server_list(false)
     }
+    if(!server_list){
+        show_api_unavailable_message(div_mods)
+        return
+    }
     update_server_nodes(server_nodes)
     render_server_nodes(server_nodes)
     sort_mod_list(current_sorter_id)
@@ -79,8 +83,21 @@ function get_server_list(get_test_list_instead) {
             .then(data => {
                 resolve(data)
             })
+            .catch(() => resolve(null))
         }
     })
+}
+
+function show_api_unavailable_message(container) {
+    container.style.display = "flex"
+    container.style.justifyContent = "center"
+    container.style.alignItems = "center"
+    container.style.height = "80vh"
+    let msg = document.createElement('p')
+    msg.innerHTML = 'Check out the new modsite at <a href="https://onb.keristero.com/">https://onb.keristero.com/</a>'
+    msg.style.textAlign = "center"
+    msg.style.fontSize = "1.5em"
+    container.appendChild(msg)
 }
 
 function update_server_nodes(server_nodes) {
